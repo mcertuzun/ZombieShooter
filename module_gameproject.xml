@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_gameproject" default="compile.module.gameproject">
+  <dirname property="module.gameproject.basedir" file="${ant.file.module_gameproject}"/>
+  
+  <property name="module.jdk.home.gameproject" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.gameproject" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.gameproject" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.gameproject" value="-encoding UTF-8 -source 9 -target 9 ${compiler.args}"/>
+  
+  <property name="gameproject.output.dir" value="${module.gameproject.basedir}/out/production/GameProject"/>
+  <property name="gameproject.testoutput.dir" value="${module.gameproject.basedir}/out/test/GameProject"/>
+  
+  <path id="gameproject.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="gameproject.module.production.classpath">
+    <path refid="${module.jdk.classpath.gameproject}"/>
+  </path>
+  
+  <path id="gameproject.runtime.production.module.classpath">
+    <pathelement location="${gameproject.output.dir}"/>
+  </path>
+  
+  <path id="gameproject.module.classpath">
+    <path refid="${module.jdk.classpath.gameproject}"/>
+    <pathelement location="${gameproject.output.dir}"/>
+  </path>
+  
+  <path id="gameproject.runtime.module.classpath">
+    <pathelement location="${gameproject.testoutput.dir}"/>
+    <pathelement location="${gameproject.output.dir}"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.gameproject">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.gameproject">
+    <patternset refid="excluded.from.module.gameproject"/>
+  </patternset>
+  
+  <path id="gameproject.module.sourcepath">
+    <dirset dir="${module.gameproject.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.gameproject" depends="compile.module.gameproject.production,compile.module.gameproject.tests" description="Compile module GameProject"/>
+  
+  <target name="compile.module.gameproject.production" depends="register.custom.compilers" description="Compile module GameProject; production classes">
+    <mkdir dir="${gameproject.output.dir}"/>
+    <javac2 destdir="${gameproject.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.gameproject}/javac">
+      <compilerarg line="${compiler.args.gameproject}"/>
+      <bootclasspath refid="gameproject.module.bootclasspath"/>
+      <classpath refid="gameproject.module.production.classpath"/>
+      <src refid="gameproject.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.gameproject"/>
+    </javac2>
+    
+    <copy todir="${gameproject.output.dir}">
+      <fileset dir="${module.gameproject.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.gameproject.tests" depends="register.custom.compilers,compile.module.gameproject.production" description="compile module GameProject; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.gameproject" description="cleanup module">
+    <delete dir="${gameproject.output.dir}"/>
+    <delete dir="${gameproject.testoutput.dir}"/>
+  </target>
+</project>
