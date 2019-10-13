@@ -1,33 +1,32 @@
 package main;
 
+import Entities.Player;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBuffer;
-import java.awt.image.DataBufferInt;
 
 public class Game extends Canvas implements Runnable{
-    public static  final int WIDTH_ = 640, HEIGHT_= WIDTH_/12*9;
+    public static final int WIDTH_ = 640, HEIGHT_= WIDTH_/12*9;
     private Thread thread;
     private boolean running = false;
     private Handler handler;
     private int tick=0;
 
-    private BufferedImage image = new BufferedImage(WIDTH_,HEIGHT_,BufferedImage.TYPE_INT_RGB);
-    private int pixels[] = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+
     public Game(){
         handler = new Handler();
         this.addKeyListener(new KeyInput(handler));
+
         new Window(WIDTH_,HEIGHT_,"The Game",this);
 
         handler.addGameObject(new Player(WIDTH_/2-32,HEIGHT_/2-32, ID.Player));
     }
 
+    //Thread and sync da kaldık!
     public synchronized void start(){
         thread = new Thread(this);
         thread.start();
         running = true;
-
     }
 
     public synchronized void stop(){
@@ -46,24 +45,21 @@ public class Game extends Canvas implements Runnable{
             this.createBufferStrategy(3);
             return;
         }
+
         Graphics graphics =  bs.getDrawGraphics();
+
         graphics.setColor(Color.white);
         graphics.fillRect(0,0,WIDTH_,HEIGHT_);
 
-        graphics.drawImage(image,0,0,WIDTH_,HEIGHT_,null);
-
         handler.render(graphics);
 
-        //Free graphics
         graphics.dispose();
         bs.show();
     }
 
     private void tick(){
+        handler.tick();
         tick++;
-        for (int i = 0; i < pixels.length; i++) {
-            pixels[i] = i+tick;
-        }
     }
 
     public void run() {
@@ -73,6 +69,7 @@ public class Game extends Canvas implements Runnable{
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
+
         while(running)
         {
             long now = System.nanoTime();
@@ -85,11 +82,11 @@ public class Game extends Canvas implements Runnable{
             }
 
             //We dont wanna overload the system. It delays a little bit but not a good solution.
-            try {
+           /*try {
                 Thread.sleep(2);
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }*/
 
             if(running)
                 render();
@@ -97,7 +94,7 @@ public class Game extends Canvas implements Runnable{
             if(System.currentTimeMillis() - timer > 1000)
             {
                 timer += 1000;
-                System.out.println("FPS: "+ frames+ "Tick" + tick);
+                System.out.println("FPS: "+ frames+ "Tick " + tick);
                 frames = 0;
             }
         }

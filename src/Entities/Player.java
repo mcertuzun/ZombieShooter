@@ -1,4 +1,6 @@
-package main;
+package Entities;
+
+import main.ID;
 
 import java.awt.*;
 
@@ -8,15 +10,15 @@ public class Player extends GameObject {
         super(x, y, id);
     }
 
-
+    @Override
     public void tick() {
         x += velX;
         y += velY;
     }
 
-
+    @Override
     public void render(Graphics graphics) {
-        graphics.setColor(Color.blue);
+        graphics.setColor(Color.black);
         graphics.fillRect(x,y,32,32);
     }
 
