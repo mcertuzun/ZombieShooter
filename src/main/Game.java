@@ -16,15 +16,13 @@ public class Game extends Canvas implements Runnable{
     public Game(){
         handler = new Handler();
         this.addKeyListener(new KeyInput(handler));
-
         new Window(WIDTH_,HEIGHT_,"The Game",this);
-
         handler.addGameObject(new Player(WIDTH_/2-32,HEIGHT_/2-32, ID.Player));
     }
 
-    //Thread and sync da kaldık!
+      //Thread and sync da kaldık!
     public synchronized void start(){
-        thread = new Thread(this);
+        thread = new Thread(this,"threadOne");
         thread.start();
         running = true;
     }
@@ -69,7 +67,6 @@ public class Game extends Canvas implements Runnable{
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
-
         while(running)
         {
             long now = System.nanoTime();
@@ -88,8 +85,12 @@ public class Game extends Canvas implements Runnable{
                 e.printStackTrace();
             }*/
 
-            if(running)
+            if(running){
                 render();
+                System.out.println(thread.getName());
+
+            }
+
             frames++;
             if(System.currentTimeMillis() - timer > 1000)
             {
