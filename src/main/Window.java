@@ -13,7 +13,7 @@ public class Window extends Canvas {
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         window.setResizable(false);
         window.setLocationRelativeTo(null);
-
+        //Deðiþiþidþflajlgjkadflþkjgadhgkjdahg
         window.add(game);
         window.setVisible(true);
         game.start();
