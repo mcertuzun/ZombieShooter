@@ -12,13 +12,13 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable{
-    public static final int WIDTH_ = 1000, HEIGHT_= 1000;
+    public static final int WIDTH_ = 600, HEIGHT_= 600;
     private Thread thread;
     private boolean running = false;
     private Handler handler;
     private int tick=0;
     Map map;
-
+    private GameObject player;
 
     public Game(){
 
@@ -29,8 +29,13 @@ public class Game extends Canvas implements Runnable{
         map = new Map();
 
         new Window(WIDTH_,HEIGHT_,"The Game",this);
-        handler.addGameObject(new Player(10,900, ID.Player));
-        handler.addGameObject(new Target(900,20, ID.Target));
+        player = new Player(10,500, ID.Player);
+        handler.addGameObject(player);
+        handler.addGameObject(new Target(500,20, ID.Target));
+        handler.addGameObject(new Target(500,80, ID.Target));
+        handler.addGameObject(new Target(400,100, ID.Target));
+        handler.addGameObject(new Target(100,20, ID.Target));
+        handler.addGameObject(new Target(300,400, ID.Target));
     }
 
     public synchronized void start(){
@@ -68,10 +73,41 @@ public class Game extends Canvas implements Runnable{
 
     private void tick(){
         handler.tick();
-        GameObject tempGameObject;
         tick++;
     }
+    private void collisionDetection() {
+    	for (GameObject obj :Handler.gameObjects) {
+    		if(obj.getId()==ID.Player) {
+    			player = obj;
+    		}else {
+    			
+    			if(player.getX() == obj.getX() - 35) {
+    				player.setVelX(-player.getVelX());
+        			System.out.println("interSol");
+        		}
+    			if(player.getX() == obj.getX() + 35) {
+    				player.setVelX(-player.getVelX());
+        			System.out.println("interSað");
+        		}
+    			if(player.getY() == obj.getY() - 35) {
+    				player.setVelY(-player.getVelY());
+        			System.out.println("interAþaðý");
+        		}
+    			if(player.getY() == obj.getY() + 35) {
+    				player.setVelY(-player.getVelY());
+        			System.out.println("interYukarý");
+        		}
+    			
+    			
+    			 
 
+    			
+    		}
+    				        
+		
+    	}
+    }
+  
     public void run() {
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;

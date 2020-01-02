@@ -55,7 +55,6 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
         for (int i = 0; i < handler.gameObjects.size() ; i++) {
             GameObject tempObject = handler.gameObjects.get(i);
             if(tempObject.getId()== ID.Player){
-                 System.out.print("goood job");
                  pointA = e.getLocationOnScreen();
             }
         }
