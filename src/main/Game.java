@@ -1,26 +1,38 @@
 package main;
 
+import Entities.GameObject;
 import Entities.Player;
+import Entities.Target;
+import mapCore.Map;
+import mapCore.ResourceManager;
+import mapCore.TileMap;
+import mapCore.TileMapRenderer;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable{
-    public static final int WIDTH_ = 640, HEIGHT_= WIDTH_/12*9;
+    public static final int WIDTH_ = 1000, HEIGHT_= 1000;
     private Thread thread;
     private boolean running = false;
     private Handler handler;
     private int tick=0;
+    Map map;
 
 
     public Game(){
+
         handler = new Handler();
-        this.addKeyListener(new KeyInput(handler));
+        this.addKeyListener(new InputManager(handler));
+        this.addMouseListener(new InputManager(handler));
+        this.addMouseMotionListener(new InputManager(handler));
+        map = new Map();
+
         new Window(WIDTH_,HEIGHT_,"The Game",this);
-        handler.addGameObject(new Player(WIDTH_/2-32,HEIGHT_/2-32, ID.Player));
+        handler.addGameObject(new Player(10,900, ID.Player));
+        handler.addGameObject(new Target(900,20, ID.Target));
     }
 
-      //Thread and sync da kaldık!
     public synchronized void start(){
         thread = new Thread(this,"threadOne");
         thread.start();
@@ -45,10 +57,9 @@ public class Game extends Canvas implements Runnable{
         }
 
         Graphics graphics =  bs.getDrawGraphics();
-
         graphics.setColor(Color.white);
         graphics.fillRect(0,0,WIDTH_,HEIGHT_);
-
+        map.paint((Graphics2D) graphics);
         handler.render(graphics);
 
         graphics.dispose();
@@ -57,6 +68,7 @@ public class Game extends Canvas implements Runnable{
 
     private void tick(){
         handler.tick();
+        GameObject tempGameObject;
         tick++;
     }
 
@@ -67,13 +79,18 @@ public class Game extends Canvas implements Runnable{
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
+
         while(running)
         {
+            long elapsedTime = System.currentTimeMillis() - timer;
+
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
             while(delta >=1)
             {
+                timer += elapsedTime;
+                update(elapsedTime);
                 tick();
                 delta--;
             }
@@ -87,8 +104,6 @@ public class Game extends Canvas implements Runnable{
 
             if(running){
                 render();
-                System.out.println(thread.getName());
-
             }
 
             frames++;
@@ -100,6 +115,9 @@ public class Game extends Canvas implements Runnable{
             }
         }
         stop();
+    }
+
+    private void update(long elapsedTime) {
     }
 
     public static void main(String args[]){

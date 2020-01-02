@@ -1,0 +1,15 @@
+# Tile Map
+# The tiles are:
+#   (Space) Empty tile
+#   A..Z    Tiles A through Z
+AAAAAAAAAA
+A        A
+A        A
+A        A
+A        A
+A        A
+A        A
+A        A
+A        A
+A        A
+AAAAAAAAAA

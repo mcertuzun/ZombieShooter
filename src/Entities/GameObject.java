@@ -11,10 +11,6 @@ public abstract class GameObject {
     protected int x,y;
     //Velocity
     protected int velX, velY;
-    //Scale
-    protected int scaleX, scaleY;
-    //Rotation
-    protected int angle;
 
     public  GameObject(int x, int y, ID id){
         this.x = x;
@@ -24,6 +20,7 @@ public abstract class GameObject {
 
     public abstract void tick();
     public abstract void render(Graphics graphics);
+
 
     public int getX() {
         return x;
