@@ -2,6 +2,7 @@ package main;
 
 
 import Entities.GameObject;
+import Physic.Helper;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,34 +14,6 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
 
     public InputManager(Handler handler) {
         this.handler = handler;
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        int key = e.getKeyCode();
-        for (int i = 0; i < handler.gameObjects.size() ; i++) {
-            GameObject tempObject = handler.gameObjects.get(i);
-            if(tempObject.getId()== ID.Player){
-                if(key== KeyEvent.VK_W) tempObject.setVelY(-5);
-                if(key== KeyEvent.VK_A) tempObject.setVelX(-5);
-                if(key== KeyEvent.VK_D) tempObject.setVelX(5);
-                if(key== KeyEvent.VK_S) tempObject.setVelY(5);
-            }
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        int key = e.getKeyCode();
-        for (int i = 0; i < handler.gameObjects.size() ; i++) {
-            GameObject tempObject = handler.gameObjects.get(i);
-            if(tempObject.getId()== ID.Player){
-                if(key== KeyEvent.VK_W) tempObject.setVelY(0);
-                if(key== KeyEvent.VK_A) tempObject.setVelX(0);
-                if(key== KeyEvent.VK_D) tempObject.setVelX(0);
-                if(key== KeyEvent.VK_S) tempObject.setVelY(0);
-            }
-        }
     }
 
 
@@ -65,7 +38,6 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
         for (int i = 0; i < handler.gameObjects.size() ; i++) {
             GameObject tempObject = handler.gameObjects.get(i);
             if(tempObject.getId()== ID.Player){
-                System.out.print("goood job");
                 pointB = e.getLocationOnScreen();
                 int velx = (int) (pointA.getX() - pointB.getX());
                 int vely = (int) (pointA.getY() - pointB.getY());
@@ -89,9 +61,10 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
     public void mouseDragged(MouseEvent e) {
 
     }
-
+    boolean aiming = true;
     @Override
     public void mouseMoved(MouseEvent e) {
 
     }
+
 }

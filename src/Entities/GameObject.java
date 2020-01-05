@@ -1,10 +1,11 @@
 package Entities;
 
+import Physic.CollisionManager;
 import main.ID;
 
 import java.awt.*;
 
-public abstract class GameObject {
+public abstract class GameObject extends CollisionManager {
 
     protected ID id;
     //Position
@@ -12,10 +13,14 @@ public abstract class GameObject {
     //Velocity
     protected int velX, velY;
 
-    public  GameObject(int x, int y, ID id){
+    public int width, height;
+
+    public GameObject(int x, int y, ID id, int height, int width) {
         this.x = x;
         this.y = y;
         this.id = id;
+        this.width = width;
+        this.height = height;
     }
 
     public abstract void tick();

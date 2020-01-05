@@ -1,41 +1,39 @@
 package main;
 
 import Entities.GameObject;
-import Entities.Player;
-import Entities.Target;
+import Physic.Helper;
 import mapCore.Map;
-import mapCore.ResourceManager;
-import mapCore.TileMap;
-import mapCore.TileMapRenderer;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable{
-    public static final int WIDTH_ = 600, HEIGHT_= 600;
+    public static final int WIDTH_ = 1000, HEIGHT_ = 1000;
     private Thread thread;
     private boolean running = false;
     private Handler handler;
     private int tick=0;
-    Map map;
+    private Map map;
+    public static Window win;
     private GameObject player;
-
+    public Helper helper;
     public Game(){
+        init();
+    }
 
+    private synchronized void init() {
         handler = new Handler();
-        this.addKeyListener(new InputManager(handler));
         this.addMouseListener(new InputManager(handler));
         this.addMouseMotionListener(new InputManager(handler));
-        map = new Map();
+        new Menu();
+        win = new Window(WIDTH_, HEIGHT_, "The Game", this);
+        loadMap();
 
-        new Window(WIDTH_,HEIGHT_,"The Game",this);
-        player = new Player(10,500, ID.Player);
-        handler.addGameObject(player);
-        handler.addGameObject(new Target(500,20, ID.Target));
-        handler.addGameObject(new Target(500,80, ID.Target));
-        handler.addGameObject(new Target(400,100, ID.Target));
-        handler.addGameObject(new Target(100,20, ID.Target));
-        handler.addGameObject(new Target(300,400, ID.Target));
+    }
+
+    private void loadMap() {
+        map = new Map(WIDTH_, HEIGHT_, 100);
+        map.loadNextMap();
     }
 
     public synchronized void start(){
@@ -64,9 +62,7 @@ public class Game extends Canvas implements Runnable{
         Graphics graphics =  bs.getDrawGraphics();
         graphics.setColor(Color.white);
         graphics.fillRect(0,0,WIDTH_,HEIGHT_);
-        map.paint((Graphics2D) graphics);
         handler.render(graphics);
-
         graphics.dispose();
         bs.show();
     }
@@ -75,39 +71,8 @@ public class Game extends Canvas implements Runnable{
         handler.tick();
         tick++;
     }
-    private void collisionDetection() {
-    	for (GameObject obj :Handler.gameObjects) {
-    		if(obj.getId()==ID.Player) {
-    			player = obj;
-    		}else {
-    			
-    			if(player.getX() == obj.getX() - 35) {
-    				player.setVelX(-player.getVelX());
-        			System.out.println("interSol");
-        		}
-    			if(player.getX() == obj.getX() + 35) {
-    				player.setVelX(-player.getVelX());
-        			System.out.println("interSað");
-        		}
-    			if(player.getY() == obj.getY() - 35) {
-    				player.setVelY(-player.getVelY());
-        			System.out.println("interAþaðý");
-        		}
-    			if(player.getY() == obj.getY() + 35) {
-    				player.setVelY(-player.getVelY());
-        			System.out.println("interYukarý");
-        		}
-    			
-    			
-    			 
 
-    			
-    		}
-    				        
-		
-    	}
-    }
-  
+
     public void run() {
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -130,13 +95,6 @@ public class Game extends Canvas implements Runnable{
                 tick();
                 delta--;
             }
-
-            //We dont wanna overload the system. It delays a little bit but not a good solution.
-           /*try {
-                Thread.sleep(2);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
 
             if(running){
                 render();

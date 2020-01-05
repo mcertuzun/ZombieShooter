@@ -4,9 +4,9 @@ import main.ID;
 
 import java.awt.*;
 
-public class Target extends GameObject {
+public class Wall extends GameObject {
 
-    public Target(int x, int y, ID id, int height, int width) {
+    public Wall(int x, int y, ID id, int height, int width) {
         super(x, y, id, height, width);
     }
 
@@ -17,7 +17,7 @@ public class Target extends GameObject {
 
     @Override
     public void render(Graphics graphics) {
-        graphics.setColor(Color.red);
+        graphics.setColor(Color.darkGray);
         graphics.fillRect(x, y, width, height);
     }
 }
