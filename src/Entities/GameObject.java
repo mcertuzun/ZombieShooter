@@ -15,8 +15,10 @@ public abstract class GameObject extends CollisionManager {
 
     public int width, height;
 
+    public boolean isAiming, onPlayer;
+
     public GameObject(int x, int y, ID id, int height, int width) {
-        this.x = x;
+        this.x = x ;
         this.y = y;
         this.id = id;
         this.width = width;
@@ -24,7 +26,11 @@ public abstract class GameObject extends CollisionManager {
     }
 
     public abstract void tick();
-    public abstract void render(Graphics graphics);
+    public abstract void render(Graphics2D graphics);
+
+    public void drawLine(Point pointA, Point pointB){
+
+    }
 
 
     public int getX() {

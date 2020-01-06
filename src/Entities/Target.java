@@ -16,8 +16,13 @@ public class Target extends GameObject {
     }
 
     @Override
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
         graphics.setColor(Color.red);
         graphics.fillRect(x, y, width, height);
+    }
+
+    @Override
+    public void drawLine(Point pointA, Point pointB) {
+
     }
 }

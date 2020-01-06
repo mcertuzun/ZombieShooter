@@ -2,10 +2,12 @@ package main;
 
 
 import Entities.GameObject;
-import Physic.Helper;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 public class InputManager extends KeyAdapter implements MouseListener, MouseMotionListener {
 
@@ -24,11 +26,17 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
 
     @Override
     public void mousePressed(MouseEvent e) {
-
         for (int i = 0; i < handler.gameObjects.size() ; i++) {
             GameObject tempObject = handler.gameObjects.get(i);
             if(tempObject.getId()== ID.Player){
-                 pointA = e.getLocationOnScreen();
+                Point pointA = new Point(tempObject.getX() + tempObject.width / 2, tempObject.getY() + tempObject.height / 2);
+                Point pointB = e.getPoint();
+                if (pointA.x < pointB.x + tempObject.width &&
+                        pointA.x + tempObject.width > pointB.x &&
+                        pointA.y < pointB.y + tempObject.height &&
+                        pointA.y + tempObject.height > pointB.y) {
+                    tempObject.onPlayer = true;
+                }
             }
         }
     }
@@ -37,12 +45,13 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
     public void mouseReleased(MouseEvent e) {
         for (int i = 0; i < handler.gameObjects.size() ; i++) {
             GameObject tempObject = handler.gameObjects.get(i);
-            if(tempObject.getId()== ID.Player){
-                pointB = e.getLocationOnScreen();
-                int velx = (int) (pointA.getX() - pointB.getX());
-                int vely = (int) (pointA.getY() - pointB.getY());
-                tempObject.setVelX(velx/10);
-                tempObject.setVelY(vely/10);
+            if (tempObject.getId() == ID.Player && tempObject.onPlayer) {
+                pointA = new Point(tempObject.getX() + tempObject.width / 2, tempObject.getY() + tempObject.height / 2);
+                pointB = e.getPoint();
+                tempObject.setVelX((int) (pointA.x - pointB.getX()) / 10);
+                tempObject.setVelY((int) (pointA.y - pointB.getY()) / 10);
+                tempObject.isAiming = false;
+                tempObject.onPlayer = false;
             }
         }
     }
@@ -59,11 +68,20 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        for (int i = 0; i < handler.gameObjects.size(); i++) {
+            GameObject tempObject = handler.gameObjects.get(i);
+            if (tempObject.getId() == ID.Player && tempObject.onPlayer) {
+                tempObject.isAiming = true;
+                Point pointA = new Point(tempObject.getX() + tempObject.width / 2, tempObject.getY() + tempObject.height / 2);
+                Point pointB = e.getPoint();
+                tempObject.drawLine(pointA, pointB);
+            }
+        }
     }
-    boolean aiming = true;
+
     @Override
     public void mouseMoved(MouseEvent e) {
+
 
     }
 

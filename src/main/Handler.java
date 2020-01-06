@@ -14,7 +14,7 @@ public class Handler {
         }
     }
 
-    public void render(Graphics graphics) {
+    public void render(Graphics2D graphics) {
         for(int i=0; i<gameObjects.size(); i++){
             GameObject tempGameObject = gameObjects.get(i);
             tempGameObject.render(graphics);
