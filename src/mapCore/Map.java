@@ -1,9 +1,6 @@
 package mapCore;
 
-import Entities.GameObject;
-import Entities.Player;
-import Entities.Target;
-import Entities.Wall;
+import Entities.*;
 import main.Handler;
 import main.ID;
 
@@ -51,7 +48,7 @@ public class Map {
         currentMap++;
         try {
             gameObjects = loadMap(
-                    "maps/map" + currentMap + ".txt");
+                    "src/maps/map" + currentMap + ".txt");
             } catch (IOException ex) {
             if (currentMap == 1) {
                 // no maps to load!
@@ -63,10 +60,9 @@ public class Map {
     }
 
     private GameObject[][] loadMap(String fileName) throws IOException {
-        GameObject[][] obj = new GameObject[height][width];
         ArrayList lines = new ArrayList();
         // read every line in the text file into the list
-        BufferedReader reader = new BufferedReader(new FileReader("src/maps/map1.txt"));
+        BufferedReader reader = new BufferedReader(new FileReader(fileName));
         while (true) {
             String line = reader.readLine();
             // no more lines to read
@@ -95,12 +91,18 @@ public class Map {
                     case ('w'):
                         Handler.gameObjects.add(new Wall(nextWidth, nextHeight, ID.Wall, tileSize, tileSize));
                         break;
-                    case ('o'):
+                    case ('t'):
                         Handler.gameObjects.add(new Target(nextWidth, nextHeight, ID.Target, tileSize, tileSize));
                         break;
                     case ('p'):
                         Handler.gameObjects.add(new Player(nextWidth, nextHeight, ID.Player, tileSize, tileSize));
                         break;
+                    case ('r'):
+                        Handler.gameObjects.add(new restartButton(nextWidth, nextHeight, ID.UI, tileSize, tileSize));
+                        break;
+                    case ('o'):
+                        break;
+
                 }
             }
         }

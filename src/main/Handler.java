@@ -25,6 +25,9 @@ public class Handler {
         this.gameObjects.add(gameObject);
     }
 
+    public void removeGameAllObject(){
+        gameObjects.removeAll(gameObjects);
+    }
     public void removeGameObject(GameObject gameObject){
         this.gameObjects.remove(gameObject);
     }

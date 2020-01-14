@@ -21,7 +21,12 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+        for (int i = 0; i < handler.gameObjects.size() ; i++) {
+            GameObject tempObject = handler.gameObjects.get(i);
+            if(tempObject.getId()== ID.UI){
+                Game.isRestart=true;
+            }
+        }
     }
 
     @Override

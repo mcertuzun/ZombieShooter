@@ -1,5 +1,6 @@
 package Entities;
 
+import images.LoadResource;
 import main.ID;
 
 import java.awt.*;
@@ -17,7 +18,8 @@ public class Wall extends GameObject {
 
     @Override
     public void render(Graphics2D graphics) {
-        graphics.setColor(Color.darkGray);
-        graphics.fillRect(x, y, width, height);
+        graphics.drawImage(LoadResource.wall, x, y, width,height,null);
+
+
     }
 }

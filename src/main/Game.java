@@ -2,8 +2,10 @@ package main;
 
 import Entities.GameObject;
 import Physic.Helper;
+import images.LoadResource;
 import mapCore.Map;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -14,9 +16,8 @@ public class Game extends Canvas implements Runnable{
     private Handler handler;
     private int tick=0;
     private Map map;
+    public static boolean isNext = false, isRestart = false;
     public static Window win;
-    private GameObject player;
-    public Helper helper;
     public Game(){
         init();
     }
@@ -26,14 +27,28 @@ public class Game extends Canvas implements Runnable{
         this.addMouseListener(new InputManager(handler));
         this.addMouseMotionListener(new InputManager(handler));
         new Menu();
+        new LoadResource();
         win = new Window(WIDTH_, HEIGHT_, "The Game", this);
         loadMap();
-
     }
 
     private void loadMap() {
         map = new Map(WIDTH_, HEIGHT_, 100);
         map.loadNextMap();
+    }
+
+    private void passLevel(){
+        handler.removeGameAllObject();
+        map.loadNextMap();
+        isNext =false;
+    }
+
+    public void restartLevel(){
+        if(map.currentMap!=0)
+            map.currentMap--;
+        handler.removeGameAllObject();
+        map.loadNextMap();
+        isRestart =false;
     }
 
     public synchronized void start(){
@@ -60,8 +75,16 @@ public class Game extends Canvas implements Runnable{
         }
 
         Graphics graphics =  bs.getDrawGraphics();
-        graphics.setColor(Color.white);
-        graphics.fillRect(0,0,WIDTH_,HEIGHT_);
+        if(isNext){
+            passLevel();
+        }
+        if(isRestart){
+            restartLevel();
+        }
+        graphics.drawImage(LoadResource.background, 0, 0, WIDTH_,HEIGHT_,null);
+
+      /*  graphics.setColor(Color.white);
+        graphics.fillRect(0,0,WIDTH_,HEIGHT_);*/
         handler.render((Graphics2D)graphics);
         graphics.dispose();
         bs.show();

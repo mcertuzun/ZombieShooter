@@ -1,5 +1,7 @@
 package Entities;
 
+import images.LoadResource;
+import main.Game;
 import main.Handler;
 import main.ID;
 
@@ -24,16 +26,21 @@ public class Player extends GameObject {
 
 	@Override
 	public void render(Graphics2D graphics) {
-		graphics.setColor(Color.black);
-		graphics.fillOval(x, y, width, height);
+		graphics.drawImage(LoadResource.player, x, y, width,height,null);
+
+
 		if (isAiming){
-			float[] dashingPattern1 = {2f, 2f};
-			Stroke stroke = new BasicStroke(2f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f);
-			graphics.setStroke(stroke);
-			graphics.setColor(Color.red);
-			graphics.drawLine(lineX1, lineY1, lineX1 + (lineX1-lineX2)*2 ,lineY1 + (lineY1- lineY2)*2);
+			aimLine(graphics);
 		}
 
+	}
+
+	private void aimLine(Graphics2D graphics) {
+		float[] dashingPattern1 = {20f, 20f};
+		Stroke stroke = new BasicStroke(5f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 1.0f, dashingPattern1, 2.0f);
+		graphics.setStroke(stroke);
+		graphics.setColor(Color.red);
+		graphics.drawLine(lineX1, lineY1, lineX1 + (lineX1-lineX2)*2 ,lineY1 + (lineY1- lineY2)*2);
 	}
 
 	@Override
@@ -47,13 +54,13 @@ public class Player extends GameObject {
 	private void collisionHandler() {
 		checkWallCollision(this);
 		for (GameObject obj : Handler.gameObjects) {
-			if (obj.id != ID.Player) {
+			if (obj.id != ID.Player && obj.id != ID.UI) {
 				checkObjectCollision(this, obj);
 			}
 			if (checkCollision(this, obj)) {
 				if (obj.id == ID.Target) {
 					panel.setVisible(true);
-					//JOptionPane.showMessageDialog(panel, "You did it");
+					Game.isNext =true;
 				}
 
 			}

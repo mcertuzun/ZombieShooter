@@ -1,5 +1,6 @@
 package Entities;
 
+import images.LoadResource;
 import main.ID;
 
 import java.awt.*;
@@ -17,8 +18,7 @@ public class Target extends GameObject {
 
     @Override
     public void render(Graphics2D graphics) {
-        graphics.setColor(Color.red);
-        graphics.fillRect(x, y, width, height);
+        graphics.drawImage(LoadResource.enemy, x, y, width,height,null);
     }
 
     @Override
