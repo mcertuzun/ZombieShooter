@@ -1,11 +1,8 @@
 package main;
 
-import Entities.GameObject;
-import Physic.Helper;
 import images.LoadResource;
 import mapCore.Map;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 

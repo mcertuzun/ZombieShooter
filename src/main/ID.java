@@ -5,5 +5,6 @@ public enum ID {
     Target(),
     Wall(),
     Enemy(),
-    UI()
+    UI(),
+    UIplay()
 }

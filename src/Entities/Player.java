@@ -5,16 +5,13 @@ import main.Game;
 import main.Handler;
 import main.ID;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Player extends GameObject {
-	protected JPanel panel;
 	private int lineX1, lineY1, lineX2, lineY2;
 
 	public Player(int x, int y, ID id, int height, int width) {
 		super(x, y, id, height, width);
-		panel = new JPanel();
 	}
 
 	@Override
@@ -27,8 +24,6 @@ public class Player extends GameObject {
 	@Override
 	public void render(Graphics2D graphics) {
 		graphics.drawImage(LoadResource.player, x, y, width,height,null);
-
-
 		if (isAiming){
 			aimLine(graphics);
 		}
@@ -59,7 +54,6 @@ public class Player extends GameObject {
 			}
 			if (checkCollision(this, obj)) {
 				if (obj.id == ID.Target) {
-					panel.setVisible(true);
 					Game.isNext =true;
 				}
 

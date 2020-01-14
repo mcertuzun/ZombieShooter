@@ -26,6 +26,9 @@ public class InputManager extends KeyAdapter implements MouseListener, MouseMoti
             if(tempObject.getId()== ID.UI){
                 Game.isRestart=true;
             }
+            if(tempObject.getId()== ID.UIplay){
+                Game.isNext=true;
+            }
         }
     }
 

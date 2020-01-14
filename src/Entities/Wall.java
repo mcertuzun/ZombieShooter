@@ -19,7 +19,5 @@ public class Wall extends GameObject {
     @Override
     public void render(Graphics2D graphics) {
         graphics.drawImage(LoadResource.wall, x, y, width,height,null);
-
-
     }
 }

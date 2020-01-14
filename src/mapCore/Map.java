@@ -45,7 +45,7 @@ public class Map {
 
     public GameObject[][] loadNextMap() {
 
-        currentMap++;
+
         try {
             gameObjects = loadMap(
                     "src/maps/map" + currentMap + ".txt");
@@ -55,7 +55,7 @@ public class Map {
             }
             currentMap = 0;
         }
-
+        currentMap++;
         return gameObjects;
     }
 
@@ -99,6 +99,9 @@ public class Map {
                         break;
                     case ('r'):
                         Handler.gameObjects.add(new restartButton(nextWidth, nextHeight, ID.UI, tileSize, tileSize));
+                        break;
+                    case ('s'):
+                        Handler.gameObjects.add(new playButton(nextWidth, nextHeight, ID.UIplay, tileSize, tileSize));
                         break;
                     case ('o'):
                         break;
